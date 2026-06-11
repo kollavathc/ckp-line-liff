@@ -7,6 +7,7 @@ import {
   EquipmentListResponse,
   UpdateEquipmentDto,
 } from '@ckpharmacy/shared';
+import { apiRequest, HttpError } from '../lib/api';
 import { EquipmentApi } from './equipment-api';
 
 export class ApiError extends Error {
@@ -14,6 +15,14 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+const apiErrorMessages: Record<string, string> = {
+  VALIDATION_ERROR: 'ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง',
+  UNAUTHORIZED: 'ไม่สามารถยืนยันตัวตนผ่าน LINE ได้',
+  NOT_FOUND: 'ไม่พบรายการอุปกรณ์ที่ต้องการ',
+  DUPLICATE_REQUEST: 'คำขอนี้ถูกดำเนินการแล้ว',
+  INTERNAL_ERROR: 'ระบบขัดข้อง กรุณาลองใหม่อีกครั้ง',
+};
 
 export class AppsScriptEquipmentApi implements EquipmentApi {
   constructor(private readonly url: string, private readonly idToken: string) {}
@@ -36,20 +45,26 @@ export class AppsScriptEquipmentApi implements EquipmentApi {
 
   private async call<T>(action: string, payload: unknown, requestId?: string): Promise<T> {
     const body: ApiRequest<unknown> = { action, payload, requestId, idToken: this.idToken };
-    const response = await fetch(this.url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(body),
-      redirect: 'follow',
-    });
-    if (!response.ok) {
-      throw new ApiError('NETWORK_ERROR', `API request failed with status ${response.status}`);
+    let result: ApiResponse<T>;
+    try {
+      result = await apiRequest<ApiResponse<T>>(this.url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body,
+      });
+    } catch (error: unknown) {
+      if (error instanceof HttpError) {
+        throw new ApiError('NETWORK_ERROR', error.message);
+      }
+      throw error;
     }
-    const result = await response.json() as ApiResponse<T>;
     if (!result.ok) {
-      throw new ApiError(result.error.code, result.error.message, result.error.fields);
+      throw new ApiError(
+        result.error.code,
+        apiErrorMessages[result.error.code] ?? 'ไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง',
+        result.error.fields,
+      );
     }
     return result.data;
   }
 }
-

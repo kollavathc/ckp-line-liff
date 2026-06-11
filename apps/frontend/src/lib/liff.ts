@@ -13,9 +13,8 @@ export async function initializeLiff(liffId: string): Promise<LiffSession> {
   }
   const idToken = liff.getIDToken();
   if (!idToken) {
-    throw new Error('LINE did not provide an ID token');
+    throw new Error('ไม่สามารถยืนยันตัวตนผ่าน LINE ได้');
   }
   const profile = await liff.getProfile();
   return { idToken, displayName: profile.displayName };
 }
-

@@ -1,6 +1,7 @@
 module.exports = {
   testEnvironment: 'jsdom',
   roots: ['<rootDir>/src'],
+  setupFiles: ['<rootDir>/src/test-polyfills.cjs'],
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   moduleNameMapper: {
     '^@ckpharmacy/shared$': '<rootDir>/../../packages/shared/src/index.ts',
