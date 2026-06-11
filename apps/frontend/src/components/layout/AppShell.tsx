@@ -8,10 +8,18 @@ interface AppShellProps {
 
 export function AppShell({ displayName, children }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigation = [
+    { to: '/', label: 'รายการอุปกรณ์' },
+    { to: '/products', label: 'ผลิตภัณฑ์' },
+  ];
+
+  function navigationClass({ isActive }: { isActive: boolean }): string {
+    return `flex min-h-11 items-center rounded-xl px-4 font-semibold ${isActive ? 'bg-emerald-50 text-emerald-700' : 'text-zinc-600 hover:bg-stone-100 hover:text-zinc-950'}`;
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f5ef] text-zinc-900">
-      <header className="border-b border-stone-200 bg-white">
+      <header className="sticky top-0 z-40 border-b border-stone-200 bg-white">
         <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
             <p className="font-heading text-lg font-bold text-zinc-950">ซีเค ฟาร์มาซี</p>
@@ -29,15 +37,15 @@ export function AppShell({ displayName, children }: AppShellProps) {
             <span className="h-0.5 w-5 bg-current" />
           </button>
           <nav className="hidden items-center gap-2 md:flex" aria-label="เมนูหลัก">
-            <NavLink to="/" className="rounded-xl bg-emerald-50 px-4 py-3 font-semibold text-emerald-700">รายการอุปกรณ์</NavLink>
+            {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass}>{item.label}</NavLink>)}
             <span className="px-3 text-sm text-zinc-500">{displayName}</span>
           </nav>
         </div>
         {menuOpen && (
           <nav className="border-t border-stone-200 px-4 py-3 md:hidden" aria-label="เมนูมือถือ">
-            <NavLink to="/" className="flex min-h-11 items-center rounded-xl bg-emerald-50 px-4 font-semibold text-emerald-700" onClick={() => setMenuOpen(false)}>
-              รายการอุปกรณ์
-            </NavLink>
+            <div className="space-y-2">
+              {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass} onClick={() => setMenuOpen(false)}>{item.label}</NavLink>)}
+            </div>
             <p className="px-4 pt-3 text-sm text-zinc-500">เข้าสู่ระบบโดย {displayName}</p>
           </nav>
         )}

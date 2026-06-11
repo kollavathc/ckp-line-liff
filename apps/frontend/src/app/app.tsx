@@ -6,6 +6,7 @@ import { Alert } from '../components/ui/Alert';
 import { getEnvironment } from '../lib/env';
 import { initializeLiff } from '../lib/liff';
 import { EquipmentPage } from '../pages/EquipmentPage';
+import { ProductListPage } from '../pages/ProductListPage';
 
 interface ReadyState {
   api: EquipmentApi;
@@ -42,6 +43,7 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<EquipmentPage api={ready.api} displayName={ready.displayName} />} />
+        <Route path="/products" element={<ProductListPage displayName={ready.displayName} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
