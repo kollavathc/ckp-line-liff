@@ -9,7 +9,7 @@ import { EquipmentPage } from '../pages/EquipmentPage';
 import { ProductListPage } from '../pages/ProductListPage';
 
 interface ReadyState {
-  api: EquipmentApi;
+  api: EquipmentApi | null;
   displayName: string;
 }
 
@@ -27,6 +27,10 @@ export function App() {
           displayName: session.displayName,
         });
       } catch (startError: unknown) {
+        if (import.meta.env.DEV) {
+          setReady({ api: null, displayName: 'โหมดตัวอย่าง' });
+          return;
+        }
         setError(startError instanceof Error ? startError.message : 'ไม่สามารถเปิดแอปพลิเคชันได้');
       }
     }
@@ -42,9 +46,15 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<EquipmentPage api={ready.api} displayName={ready.displayName} />} />
+        <Route path="/" element={<Navigate to="/products" replace />} />
         <Route path="/products" element={<ProductListPage displayName={ready.displayName} />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="/equipment"
+          element={ready.api
+            ? <EquipmentPage api={ready.api} displayName={ready.displayName} />
+            : <main className="mx-auto min-h-screen max-w-xl bg-[#f8f5ef] p-6"><Alert>หน้านี้ต้องตั้งค่า LIFF ID และ URL ของบริการก่อนใช้งาน</Alert></main>}
+        />
+        <Route path="*" element={<Navigate to="/products" replace />} />
       </Routes>
     </BrowserRouter>
   );

@@ -9,7 +9,7 @@ interface AppShellProps {
 export function AppShell({ displayName, children }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation = [
-    { to: '/', label: 'รายการอุปกรณ์' },
+    { to: '/equipment', label: 'รายการอุปกรณ์' },
     { to: '/products', label: 'ผลิตภัณฑ์' },
   ];
 
