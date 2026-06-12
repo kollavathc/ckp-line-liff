@@ -22,9 +22,12 @@ export function AppShell({ children, displayName }: AppShellProps) {
     <div className="min-h-screen bg-[#f8f5ef] text-zinc-900">
       <header className="sticky top-0 z-40 border-b border-stone-200 bg-white">
         <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="font-heading text-lg font-bold text-zinc-950">ซีเค ฟาร์มาซี</p>
-            <p className="text-xs text-zinc-500">อุปกรณ์การแพทย์สำหรับคุณและครอบครัว</p>
+          <div className="flex min-w-0 items-center gap-3">
+            <img src="/brand/logo.png" alt="โลโก้ซีเค ฟาร์มาซี" className="h-12 w-12 shrink-0 object-contain" />
+            <div className="min-w-0">
+              <p className="font-heading text-lg font-bold text-zinc-950">ซีเค ฟาร์มาซี</p>
+              <p className="truncate text-xs text-zinc-500">อุปกรณ์การแพทย์สำหรับคุณและครอบครัว</p>
+            </div>
           </div>
           <button
             type="button"
