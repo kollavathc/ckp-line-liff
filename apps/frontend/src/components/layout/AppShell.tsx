@@ -3,10 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 interface AppShellProps {
   children: ReactNode;
-  displayName?: string;
 }
 
-export function AppShell({ children, displayName }: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation = [
     { to: '/products', label: 'สินค้าทั้งหมด' },
@@ -42,7 +41,6 @@ export function AppShell({ children, displayName }: AppShellProps) {
           </button>
           <nav className="hidden items-center gap-2 md:flex" aria-label="เมนูหลัก">
             {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass}>{item.label}</NavLink>)}
-            {displayName && <span className="px-3 text-sm text-zinc-500">{displayName}</span>}
           </nav>
         </div>
         {menuOpen && (
@@ -50,7 +48,6 @@ export function AppShell({ children, displayName }: AppShellProps) {
             <div className="space-y-2">
               {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass} onClick={() => setMenuOpen(false)}>{item.label}</NavLink>)}
             </div>
-            {displayName && <p className="px-4 pt-3 text-sm text-zinc-500">เข้าสู่ระบบโดย {displayName}</p>}
           </nav>
         )}
       </header>

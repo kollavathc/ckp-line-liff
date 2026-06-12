@@ -2,24 +2,15 @@ import { ApiRequest } from '@ckpharmacy/shared';
 import { PostEvent } from './domain';
 import { jsonResponse } from './infrastructure/api-response';
 import { getProperties } from './infrastructure/properties';
-import { SheetEquipmentRepository } from './repositories/equipment-repository';
 import { SheetProductRepository } from './repositories/product-repository';
 import { Router } from './router';
-import { EquipmentService } from './services/equipment-service';
-import { LineAuthService } from './services/line-auth-service';
 import { ProductService } from './services/product-service';
 
 function createRouter(): Router {
   const properties = getProperties();
   const spreadsheet = SpreadsheetApp.openById(properties.spreadsheetId);
-  const repository = new SheetEquipmentRepository(spreadsheet);
   const productRepository = new SheetProductRepository(spreadsheet);
-  return new Router(
-    new LineAuthService(properties.lineChannelId),
-    new EquipmentService(repository),
-    repository,
-    new ProductService(productRepository),
-  );
+  return new Router(new ProductService(productRepository));
 }
 
 export function doGet(): GoogleAppsScript.Content.TextOutput {

@@ -20,8 +20,6 @@ export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 
 export interface ApiRequest<T> {
   action: string;
-  idToken?: string;
   requestId?: string;
   payload: T;
 }
-

@@ -9,9 +9,9 @@ Build a mobile-first customer product catalog for CK Pharmacy. Customers can bro
 ## Repository Architecture
 
 ```text
-apps/frontend/     Vite, React, React Router, Tailwind CSS, LINE LIFF
+apps/frontend/     Vite, React, React Router, Tailwind CSS
 apps-script/       Google Apps Script Web App API
-packages/shared/   Browser-compatible DTOs, API contracts, and enums
+packages/shared/   Browser-compatible API contracts and enums
 ```
 
 There is no NestJS backend in phase 1. The frontend API boundary is designed so Apps Script can be replaced by a future backend adapter.
@@ -69,28 +69,6 @@ Important files:
 
 Production uses `product.list`, `product.get`, and `category.list` from Apps Script.
 
-### Legacy `/equipment`
-
-Equipment recording and management flow.
-
-Implemented features:
-
-- List equipment owned by the authenticated LINE user
-- Create equipment records
-- Soft-delete equipment records
-- Summary cards
-- Mobile card list and desktop table
-- Thai UI and confirmation modal
-
-Important files:
-
-- `apps/frontend/src/pages/EquipmentPage.tsx`
-- `apps/frontend/src/api/apps-script-equipment-api.ts`
-- `apps/frontend/src/api/equipment-api.ts`
-- `apps/frontend/src/components/equipment/`
-
-The source remains in the repository, but the route and navigation entry are no longer exposed to customers.
-
 ### `/`
 
 Redirects to `/products`.
@@ -116,7 +94,7 @@ A native Google Sheet was created:
 - Spreadsheet ID: `1aX4--kZIcmcxcGEljEzall69jZqIUKeCRPSk8zqQEbw`
 - URL: https://docs.google.com/spreadsheets/d/1aX4--kZIcmcxcGEljEzall69jZqIUKeCRPSk8zqQEbw/edit
 
-Required catalog tabs are `products`, `product_images`, and `categories`. Legacy equipment actions also use `equipment` and `request_log`.
+Required tabs are `products`, `product_images`, and `categories`.
 
 The exact headers are documented in `apps-script/README.md`. The sheet has frozen header rows, filters, input validation, date formatting, and Asia/Bangkok timezone.
 
@@ -127,7 +105,6 @@ The Apps Script source is implemented but has not been connected to a real Apps 
 Required Script Properties:
 
 ```text
-LINE_CHANNEL_ID
 SPREADSHEET_ID=1aX4--kZIcmcxcGEljEzall69jZqIUKeCRPSk8zqQEbw
 ```
 
@@ -139,32 +116,20 @@ Deployment requirements:
 4. Run `pnpm --filter apps-script deploy`.
 5. Deploy as a Web App executed by the owner and accessible to anyone.
 6. Put the deployment URL in `apps/frontend/.env.local`.
-7. Configure the frontend URL as the LIFF endpoint and set `VITE_LIFF_ID`.
+7. Test the deployed frontend on mobile browsers and inside LINE.
 
 ## API Shape
 
 Apps Script accepts `POST` requests with a `text/plain` JSON body to avoid CORS preflight issues.
 
-Public catalog actions:
+Catalog actions:
 
 ```text
 product.list
 product.get
 category.list
-```
-
-Legacy authenticated actions:
-
-```text
 health.get
-equipment.list
-equipment.get
-equipment.create
-equipment.update
-equipment.delete
 ```
-
-Protected requests send a LINE ID token. The backend verifies it against the configured LINE channel ID. Sheet access remains inside the repository layer.
 
 ## Tests And Verification
 
@@ -176,13 +141,7 @@ pnpm test
 pnpm build
 ```
 
-At that point:
-
-- All workspace type checks passed.
-- All 10 tests passed: 2 shared, 2 Apps Script, 6 frontend.
-- Apps Script and frontend production builds passed.
-
-The in-app browser service was unavailable during visual inspection. Component behavior was verified with Jest and Testing Library, but a real-device LIFF visual pass is still required.
+At that point all workspace type checks, tests, and production builds passed.
 
 ## Git History From This Work Session
 
@@ -197,11 +156,9 @@ a3681f4 fix(frontend): allow local product catalog preview
 ## Recommended Next Steps
 
 1. Connect and deploy the Apps Script project.
-2. Configure LINE LIFF and create `apps/frontend/.env.local`.
-3. Run the app inside LINE on a real mobile device.
-4. Create and populate the `products`, `product_images`, and `categories` tabs using `apps-script/README.md`.
-5. Set `VITE_LINE_CONTACT_URL` to the pharmacy's real LINE contact URL.
-6. Add additional product images and product-specific specifications.
-7. Test share and LINE contact behavior inside the real LIFF browser.
+2. Create `apps/frontend/.env.local` with the deployed Apps Script URL.
+3. Set `VITE_LINE_CONTACT_URL` to the pharmacy's real LINE contact URL.
+4. Add real product images and product-specific specifications.
+5. Test share and LINE contact behavior on mobile browsers and inside LINE.
 
 Do not create a product sheet, migration, backend package, or new infrastructure without explicit approval.

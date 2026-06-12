@@ -7,8 +7,13 @@ import {
   ProductListResponse,
 } from '@ckpharmacy/shared';
 import { apiRequest, HttpError } from '../lib/api';
-import { ApiError } from './apps-script-equipment-api';
 import { ProductApi } from './product-api';
+
+export class ApiError extends Error {
+  constructor(readonly code: string, message: string) {
+    super(message);
+  }
+}
 
 export class AppsScriptProductApi implements ProductApi {
   constructor(private readonly url: string) {}

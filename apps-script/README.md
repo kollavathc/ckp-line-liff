@@ -2,22 +2,9 @@
 
 ## Script properties
 
-- `LINE_CHANNEL_ID`: LINE Login channel ID used only by the legacy equipment-management actions
 - `SPREADSHEET_ID`: target Google Sheet ID
 
 ## Sheets
-
-Create a sheet named `equipment` with this header row:
-
-```text
-id,itemCode,name,category,brand,model,serialNumber,quantity,unit,location,condition,status,notes,recordedByLineUserId,recordedByName,createdAt,updatedAt,deletedAt
-```
-
-Create a sheet named `request_log` with this header row:
-
-```text
-requestId,action,lineUserId,status,createdAt
-```
 
 Create a sheet named `products` with this header row:
 
@@ -39,7 +26,7 @@ Create a sheet named `categories` with this header row:
 id,name,sortOrder
 ```
 
-Public catalog actions do not require a LINE ID token:
+Catalog actions:
 
 ```text
 product.list
