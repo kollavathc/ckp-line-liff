@@ -5,6 +5,7 @@ import { AppShell } from '../components/layout/AppShell';
 import { ProductCard } from '../components/products/ProductCard';
 import { Alert } from '../components/ui/Alert';
 import { Card } from '../components/ui/Card';
+import { canShareToLine, shareToLine } from '../lib/liff';
 import { formatProductPrice, productCategoryLabels, productStockLabels } from '../lib/product';
 import { Product } from '../types/product';
 
@@ -57,7 +58,9 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
     if (!product) return;
     const shareData = { title: product.name, text: `ดูข้อมูล ${product.name} จากซีเค ฟาร์มาซี`, url: window.location.href };
     try {
-      if (navigator.share) {
+      if (canShareToLine()) {
+        if (await shareToLine(`${shareData.text}\n${shareData.url}`)) setNotice('แชร์สินค้าไปยังแชต LINE แล้ว');
+      } else if (navigator.share) {
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
