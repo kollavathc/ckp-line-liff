@@ -4,22 +4,36 @@ import {
   ApiResponse,
   EquipmentIdRequest,
   EquipmentListRequest,
+  ProductGetRequest,
+  ProductListRequest,
 } from '@ckpharmacy/shared';
 import { EquipmentRepository } from './repositories/equipment-repository';
 import { EquipmentService, RequestValidationError } from './services/equipment-service';
 import { LineAuthService } from './services/line-auth-service';
+import { ProductService } from './services/product-service';
 
 export class Router {
   constructor(
     private readonly authService: LineAuthService,
     private readonly equipmentService: EquipmentService,
     private readonly repository: EquipmentRepository,
+    private readonly productService: ProductService,
   ) {}
 
   handle(request: ApiRequest<unknown>): ApiResponse<unknown> {
     try {
       if (request.action === 'health.get') {
         return { ok: true, data: { status: 'ok' }, requestId: request.requestId };
+      }
+
+      if (request.action === 'product.list') {
+        return { ok: true, data: { items: this.productService.list(this.objectPayload<ProductListRequest>(request.payload)) }, requestId: request.requestId };
+      }
+      if (request.action === 'product.get') {
+        return { ok: true, data: this.productService.get(this.productIdPayload(request.payload).id), requestId: request.requestId };
+      }
+      if (request.action === 'category.list') {
+        return { ok: true, data: { items: this.productService.listCategories() }, requestId: request.requestId };
       }
 
       const user = this.authService.verify(request.idToken ?? '');
@@ -66,6 +80,14 @@ export class Router {
     return { id: value.id };
   }
 
+  private productIdPayload(payload: unknown): ProductGetRequest {
+    const value = this.objectPayload<Partial<ProductGetRequest>>(payload);
+    if (!value.id || typeof value.id !== 'string') {
+      throw new RequestValidationError({ id: ['id must be a string'] });
+    }
+    return { id: value.id };
+  }
+
   private isMutation(action: string): boolean {
     return ['equipment.create', 'equipment.update', 'equipment.delete'].includes(action);
   }
@@ -80,6 +102,9 @@ export class Router {
       }
       if (error.message === 'NOT_FOUND') {
         return this.failure('NOT_FOUND', 'Equipment item was not found', requestId);
+      }
+      if (error.message === 'PRODUCT_NOT_FOUND') {
+        return this.failure('NOT_FOUND', 'Product was not found', requestId);
       }
       if (error.message === 'UNKNOWN_ACTION') {
         return this.failure('UNKNOWN_ACTION', 'The requested action is not supported', requestId);
@@ -98,4 +123,3 @@ export class Router {
     return { ok: false, error: { code, message, fields }, requestId };
   }
 }
-

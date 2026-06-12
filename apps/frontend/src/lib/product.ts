@@ -31,6 +31,10 @@ export function formatThaiCurrency(value: number): string {
   return `฿${currencyFormatter.format(value)}`;
 }
 
+export function formatProductPrice(value: number | null): string {
+  return value === null ? 'สอบถามราคา' : formatThaiCurrency(value);
+}
+
 export function formatProductDate(value: string): string {
   return dateFormatter.format(new Date(value));
 }

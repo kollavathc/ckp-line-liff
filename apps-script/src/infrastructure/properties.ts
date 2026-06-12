@@ -5,10 +5,9 @@ export function getProperties(): AppsScriptProperties {
   const lineChannelId = properties.getProperty('LINE_CHANNEL_ID');
   const spreadsheetId = properties.getProperty('SPREADSHEET_ID');
 
-  if (!lineChannelId || !spreadsheetId) {
-    throw new Error('Required script properties are not configured');
+  if (!spreadsheetId) {
+    throw new Error('SPREADSHEET_ID is not configured');
   }
 
-  return { lineChannelId, spreadsheetId };
+  return { lineChannelId: lineChannelId ?? '', spreadsheetId };
 }
-

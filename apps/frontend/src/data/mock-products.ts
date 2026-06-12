@@ -1,6 +1,10 @@
-import { Product } from '../types/product';
+import { Product, ProductCategoryItem } from '../types/product';
 
-export const mockProducts: Product[] = [
+type ProductSeed = Pick<Product, 'id' | 'name' | 'sku' | 'brand' | 'category' | 'stockStatus' | 'price' | 'updatedAt' | 'imageUrl'> & {
+  description: string;
+};
+
+const productSeeds: ProductSeed[] = [
   {
     id: 'product-001',
     name: 'รถเข็นผู้ป่วยอะลูมิเนียม รุ่น Compact',
@@ -97,4 +101,30 @@ export const mockProducts: Product[] = [
     updatedAt: '2026-04-16T06:10:00.000Z',
     imageUrl: '/products/reclining-wheelchair.svg',
   },
+];
+
+export const mockProducts: Product[] = productSeeds.map((product, index) => ({
+  ...product,
+  slug: product.id,
+  shortDescription: product.description,
+  description: `${product.description} คัดสรรสำหรับการดูแลผู้ป่วยที่บ้าน ใช้งานสะดวก และมีบริการให้คำแนะนำก่อนตัดสินใจ`,
+  imageUrls: [product.imageUrl],
+  highlights: ['ใช้งานง่าย', 'เหมาะสำหรับการดูแลที่บ้าน', 'มีบริการให้คำแนะนำก่อนสั่งซื้อ'],
+  specifications: {
+    ยี่ห้อ: product.brand,
+    การรับประกัน: 'สอบถามรายละเอียดกับทางร้าน',
+  },
+  featured: index < 4,
+  sortOrder: index + 1,
+  published: true,
+}));
+
+export const mockCategories: ProductCategoryItem[] = [
+  { id: 'WHEELCHAIR', name: 'รถเข็นผู้ป่วย', sortOrder: 1 },
+  { id: 'WALKER', name: 'อุปกรณ์ช่วยเดิน', sortOrder: 2 },
+  { id: 'HOSPITAL_BED', name: 'เตียงผู้ป่วย', sortOrder: 3 },
+  { id: 'BLOOD_PRESSURE_MONITOR', name: 'เครื่องวัดความดัน', sortOrder: 4 },
+  { id: 'DIABETIC_SUPPLIES', name: 'อุปกรณ์เบาหวาน', sortOrder: 5 },
+  { id: 'WOUND_CARE', name: 'อุปกรณ์ดูแลแผล', sortOrder: 6 },
+  { id: 'RESPIRATORY_EQUIPMENT', name: 'อุปกรณ์ระบบทางเดินหายใจ', sortOrder: 7 },
 ];

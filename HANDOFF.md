@@ -4,12 +4,7 @@ Last updated: June 12, 2026
 
 ## Current Goal
 
-Build a mobile-first LINE LIFF application for CK Pharmacy medical equipment workflows.
-
-The repository currently contains two frontend flows:
-
-- A medical equipment record-management flow backed by Google Apps Script and Google Sheets.
-- A medical product catalog for sales representatives. This currently uses mock data only.
+Build a mobile-first customer product catalog for CK Pharmacy. Customers can browse without LINE login, open product details, share links, and contact the store through LINE.
 
 ## Repository Architecture
 
@@ -42,7 +37,7 @@ The frontend rules require Thai UI text, React function components, React Router
 
 ### `/products`
 
-Product catalog for medical equipment sales representatives.
+Customer-facing medical product catalog.
 
 Implemented features:
 
@@ -55,9 +50,11 @@ Implemented features:
 - Loading skeleton cards
 - Empty state
 - Thai currency and date formatting
-- View, edit, and share action placeholders
-- Web Share API with clipboard fallback
-- Eight mock products with local SVG artwork
+- Customer-focused cards without staff edit actions
+- Product detail route at `/products/:productId`
+- Highlights, specifications, image gallery, related products, LINE contact, and sharing
+- Apps Script product API with local development mock fallback
+- Eight mock products with local SVG artwork for development only
 
 Important files:
 
@@ -70,9 +67,9 @@ Important files:
 - `apps/frontend/src/types/product.ts`
 - `apps/frontend/src/lib/product.ts`
 
-This route does not use Apps Script yet.
+Production uses `product.list`, `product.get`, and `category.list` from Apps Script.
 
-### `/equipment`
+### Legacy `/equipment`
 
 Equipment recording and management flow.
 
@@ -92,7 +89,7 @@ Important files:
 - `apps/frontend/src/api/equipment-api.ts`
 - `apps/frontend/src/components/equipment/`
 
-This route requires real LIFF and Apps Script configuration.
+The source remains in the repository, but the route and navigation entry are no longer exposed to customers.
 
 ### `/`
 
@@ -100,23 +97,15 @@ Redirects to `/products`.
 
 ## Local Preview Behavior
 
-There is currently no `apps/frontend/.env.local`.
-
-In Vite development mode, missing LIFF configuration starts the app in preview mode:
-
-- Display name is `โหมดตัวอย่าง`.
-- `/products` works with mock data.
-- `/equipment` shows a configuration warning.
-
-Production builds still require valid LIFF and API configuration. Do not extend the development fallback to production.
+In Vite development mode, a missing Apps Script URL uses mock products. Production does not fall back to mock data.
 
 ## Required Frontend Environment
 
 Create `apps/frontend/.env.local` from `.env.example` when connecting real services:
 
 ```env
-VITE_LIFF_ID=<LINE_LIFF_ID>
 VITE_APPS_SCRIPT_URL=https://script.google.com/macros/s/<DEPLOYMENT_ID>/exec
+VITE_LINE_CONTACT_URL=https://line.me/R/ti/p/@YOUR_LINE_ID
 ```
 
 ## Google Sheet
@@ -127,10 +116,7 @@ A native Google Sheet was created:
 - Spreadsheet ID: `1aX4--kZIcmcxcGEljEzall69jZqIUKeCRPSk8zqQEbw`
 - URL: https://docs.google.com/spreadsheets/d/1aX4--kZIcmcxcGEljEzall69jZqIUKeCRPSk8zqQEbw/edit
 
-Tabs:
-
-- `equipment`
-- `request_log`
+Required catalog tabs are `products`, `product_images`, and `categories`. Legacy equipment actions also use `equipment` and `request_log`.
 
 The exact headers are documented in `apps-script/README.md`. The sheet has frozen header rows, filters, input validation, date formatting, and Asia/Bangkok timezone.
 
@@ -159,7 +145,15 @@ Deployment requirements:
 
 Apps Script accepts `POST` requests with a `text/plain` JSON body to avoid CORS preflight issues.
 
-Actions:
+Public catalog actions:
+
+```text
+product.list
+product.get
+category.list
+```
+
+Legacy authenticated actions:
 
 ```text
 health.get
@@ -205,9 +199,9 @@ a3681f4 fix(frontend): allow local product catalog preview
 1. Connect and deploy the Apps Script project.
 2. Configure LINE LIFF and create `apps/frontend/.env.local`.
 3. Run the app inside LINE on a real mobile device.
-4. Replace product mock data with shared product contracts and an API abstraction.
-5. Define a Google Sheet product schema or future backend schema before implementing product persistence.
-6. Implement real product details, edit, and LIFF share flows.
-7. Add frontend tests for category filtering, stock filtering, sorting, and share failure behavior.
+4. Create and populate the `products`, `product_images`, and `categories` tabs using `apps-script/README.md`.
+5. Set `VITE_LINE_CONTACT_URL` to the pharmacy's real LINE contact URL.
+6. Add additional product images and product-specific specifications.
+7. Test share and LINE contact behavior inside the real LIFF browser.
 
 Do not create a product sheet, migration, backend package, or new infrastructure without explicit approval.

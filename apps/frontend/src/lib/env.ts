@@ -1,13 +1,10 @@
 interface Environment {
-  liffId: string;
-  appsScriptUrl: string;
+  appsScriptUrl?: string;
+  lineContactUrl: string;
 }
 
 export function getEnvironment(): Environment {
-  const liffId = import.meta.env.VITE_LIFF_ID;
   const appsScriptUrl = import.meta.env.VITE_APPS_SCRIPT_URL;
-  if (!liffId || !appsScriptUrl) {
-    throw new Error('ยังไม่ได้ตั้งค่า LIFF ID หรือ URL ของบริการ');
-  }
-  return { liffId, appsScriptUrl };
+  const lineContactUrl = import.meta.env.VITE_LINE_CONTACT_URL || 'https://line.me/R/ti/p/';
+  return { appsScriptUrl, lineContactUrl };
 }

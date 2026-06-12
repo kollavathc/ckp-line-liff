@@ -2,15 +2,16 @@ import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface AppShellProps {
-  displayName: string;
   children: ReactNode;
+  displayName?: string;
 }
 
-export function AppShell({ displayName, children }: AppShellProps) {
+export function AppShell({ children, displayName }: AppShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigation = [
-    { to: '/equipment', label: 'รายการอุปกรณ์' },
-    { to: '/products', label: 'ผลิตภัณฑ์' },
+    { to: '/products', label: 'สินค้าทั้งหมด' },
+    { to: '/products#categories', label: 'หมวดหมู่' },
+    { to: '/products#contact', label: 'ติดต่อร้าน' },
   ];
 
   function navigationClass({ isActive }: { isActive: boolean }): string {
@@ -23,7 +24,7 @@ export function AppShell({ displayName, children }: AppShellProps) {
         <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
             <p className="font-heading text-lg font-bold text-zinc-950">ซีเค ฟาร์มาซี</p>
-            <p className="text-xs text-zinc-500">ระบบบันทึกอุปกรณ์การแพทย์</p>
+            <p className="text-xs text-zinc-500">อุปกรณ์การแพทย์สำหรับคุณและครอบครัว</p>
           </div>
           <button
             type="button"
@@ -38,7 +39,7 @@ export function AppShell({ displayName, children }: AppShellProps) {
           </button>
           <nav className="hidden items-center gap-2 md:flex" aria-label="เมนูหลัก">
             {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass}>{item.label}</NavLink>)}
-            <span className="px-3 text-sm text-zinc-500">{displayName}</span>
+            {displayName && <span className="px-3 text-sm text-zinc-500">{displayName}</span>}
           </nav>
         </div>
         {menuOpen && (
@@ -46,7 +47,7 @@ export function AppShell({ displayName, children }: AppShellProps) {
             <div className="space-y-2">
               {navigation.map((item) => <NavLink key={item.to} to={item.to} className={navigationClass} onClick={() => setMenuOpen(false)}>{item.label}</NavLink>)}
             </div>
-            <p className="px-4 pt-3 text-sm text-zinc-500">เข้าสู่ระบบโดย {displayName}</p>
+            {displayName && <p className="px-4 pt-3 text-sm text-zinc-500">เข้าสู่ระบบโดย {displayName}</p>}
           </nav>
         )}
       </header>
