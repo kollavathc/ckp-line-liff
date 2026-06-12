@@ -36,7 +36,7 @@ The frontend is a static site. Host it for free on Cloudflare Pages or Netlify; 
 
 Build settings:
 
-- Build command: `pnpm install && pnpm --filter frontend build`
+- Build command: `pnpm install && pnpm --filter @ckpharmacy/shared build && pnpm --filter frontend build`
 - Output directory: `apps/frontend/dist`
 - Environment variables: `VITE_APPS_SCRIPT_URL`, `VITE_LINE_CONTACT_URL`, and `VITE_LIFF_ID`
 
