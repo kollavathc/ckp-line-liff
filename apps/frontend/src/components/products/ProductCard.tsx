@@ -7,10 +7,10 @@ interface ProductCardProps {
 }
 
 const stockStyles: Record<Product['stockStatus'], string> = {
-  IN_STOCK: 'bg-emerald-50 text-emerald-700',
-  LOW_STOCK: 'bg-amber-50 text-amber-700',
+  IN_STOCK: 'bg-success-soft text-success-dark',
+  LOW_STOCK: 'bg-highlight-soft text-zinc-800',
   OUT_OF_STOCK: 'bg-rose-50 text-rose-700',
-  PREORDER: 'bg-cyan-50 text-cyan-700',
+  PREORDER: 'bg-secondary-soft text-secondary-dark',
 };
 
 export function ProductCard({ product }: ProductCardProps) {
@@ -30,7 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="mt-auto pt-5">
           <p className="font-heading text-2xl font-bold text-zinc-950">{formatProductPrice(product.price)}</p>
-          <Link to={`/products/${product.slug}`} className="mt-5 flex min-h-11 w-full items-center justify-center rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white hover:bg-emerald-700">ดูรายละเอียด</Link>
+          <Link to={`/products/${product.slug}`} className="mt-5 flex min-h-11 w-full items-center justify-center rounded-xl bg-primary px-4 py-2.5 font-semibold text-white hover:bg-primary-dark">ดูรายละเอียด</Link>
         </div>
       </div>
     </article>

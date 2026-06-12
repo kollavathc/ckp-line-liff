@@ -34,13 +34,12 @@ Use a premium warm light theme throughout the application.
 
 ## Color Palette
 
-- Use warm neutrals such as stone, zinc, and amber-tinted neutrals as the primary palette.
-- Choose exactly one accent family for the application, such as emerald or cyan. Do not mix multiple accent families.
-- Use the accent only for calls to action, active states, highlights, and selected items.
-- Use `emerald-500` for success states.
-- Use `amber-500` for warning states.
+- Use warm neutrals such as stone and zinc as the base palette.
+- Use `#763f9a` as the primary color for calls to action, active states, and selected items.
+- Use `#9f52a4` as the secondary color for supporting accents and informational states.
+- Use `#fbf48a` for warm highlights and warning surfaces with dark text.
+- Use `#54b254` for success and available states.
 - Use `rose-500` for danger and error states.
-- Use `cyan-500` for informational states.
 
 ## Typography
 

@@ -14,10 +14,10 @@ interface ProductDetailPageProps {
 }
 
 const stockStyles: Record<Product['stockStatus'], string> = {
-  IN_STOCK: 'bg-emerald-50 text-emerald-700',
-  LOW_STOCK: 'bg-amber-50 text-amber-700',
+  IN_STOCK: 'bg-success-soft text-success-dark',
+  LOW_STOCK: 'bg-highlight-soft text-zinc-800',
   OUT_OF_STOCK: 'bg-rose-50 text-rose-700',
-  PREORDER: 'bg-cyan-50 text-cyan-700',
+  PREORDER: 'bg-secondary-soft text-secondary-dark',
 };
 
 export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProps) {
@@ -71,7 +71,7 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
   return (
     <AppShell>
       <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
-        <Link to="/products" className="inline-flex min-h-11 items-center text-sm font-semibold text-emerald-700 hover:text-emerald-800">กลับไปสินค้าทั้งหมด</Link>
+        <Link to="/products" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary hover:text-primary-dark">กลับไปสินค้าทั้งหมด</Link>
         {loading ? (
           <div className="mt-5 grid animate-pulse gap-8 lg:grid-cols-2"><div className="aspect-square rounded-2xl bg-stone-200" /><div className="space-y-4"><div className="h-8 rounded bg-stone-200" /><div className="h-20 rounded bg-stone-200" /><div className="h-12 rounded bg-stone-200" /></div></div>
         ) : error || !product ? (
@@ -81,27 +81,27 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
             <div className="mt-5 grid gap-8 lg:grid-cols-2 lg:gap-12">
               <section>
                 <div className="aspect-square overflow-hidden rounded-2xl border border-stone-200 bg-white"><img src={selectedImage} alt={product.name} className="h-full w-full object-contain" /></div>
-                {images.length > 1 && <div className="mt-3 grid grid-cols-4 gap-3">{images.map((imageUrl) => <button key={imageUrl} type="button" onClick={() => setSelectedImage(imageUrl)} className={`aspect-square overflow-hidden rounded-xl border bg-white ${selectedImage === imageUrl ? 'border-emerald-600' : 'border-stone-200'}`}><img src={imageUrl} alt="" className="h-full w-full object-contain" /></button>)}</div>}
+                {images.length > 1 && <div className="mt-3 grid grid-cols-4 gap-3">{images.map((imageUrl) => <button key={imageUrl} type="button" onClick={() => setSelectedImage(imageUrl)} className={`aspect-square overflow-hidden rounded-xl border bg-white ${selectedImage === imageUrl ? 'border-primary' : 'border-stone-200'}`}><img src={imageUrl} alt="" className="h-full w-full object-contain" /></button>)}</div>}
               </section>
 
               <section>
-                <p className="text-sm font-semibold text-emerald-600">{productCategoryLabels[product.category]}</p>
+                <p className="text-sm font-semibold text-primary">{productCategoryLabels[product.category]}</p>
                 <h1 className="mt-2 font-heading text-3xl font-bold text-zinc-950 sm:text-4xl">{product.name}</h1>
                 <p className="mt-2 text-zinc-500">{product.brand}</p>
                 <span className={`mt-5 inline-flex rounded-full px-3 py-1.5 text-sm font-semibold ${stockStyles[product.stockStatus]}`}>{productStockLabels[product.stockStatus]}</span>
                 <p className="mt-6 font-heading text-3xl font-bold text-zinc-950">{formatProductPrice(product.price)}</p>
                 <p className="mt-5 leading-7 text-zinc-700">{product.description}</p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                  <a href={lineContactUrl} target="_blank" rel="noreferrer" className="flex min-h-12 items-center justify-center rounded-xl bg-emerald-600 px-5 font-semibold text-white hover:bg-emerald-700">สอบถามสินค้าทาง LINE</a>
+                  <a href={lineContactUrl} target="_blank" rel="noreferrer" className="flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 font-semibold text-white hover:bg-primary-dark">สอบถามสินค้าทาง LINE</a>
                   <button type="button" onClick={() => void shareProduct()} className="min-h-12 rounded-xl border border-stone-200 bg-white px-5 font-semibold text-zinc-700 hover:bg-stone-50">แชร์สินค้า</button>
                 </div>
                 <p className="mt-3 text-xs text-zinc-500">ราคาและสินค้าคงเหลืออาจมีการเปลี่ยนแปลง กรุณาสอบถามทางร้านก่อนสั่งซื้อ</p>
-                {notice && <p role="status" className="mt-4 rounded-xl bg-cyan-50 p-3 text-sm text-cyan-700">{notice}</p>}
+                {notice && <p role="status" className="mt-4 rounded-xl bg-secondary-soft p-3 text-sm text-secondary-dark">{notice}</p>}
               </section>
             </div>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <Card className="p-6"><h2 className="font-heading text-xl font-bold text-zinc-950">จุดเด่นสินค้า</h2><ul className="mt-4 space-y-3">{product.highlights.map((highlight) => <li key={highlight} className="flex gap-3 text-zinc-700"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />{highlight}</li>)}</ul></Card>
+              <Card className="p-6"><h2 className="font-heading text-xl font-bold text-zinc-950">จุดเด่นสินค้า</h2><ul className="mt-4 space-y-3">{product.highlights.map((highlight) => <li key={highlight} className="flex gap-3 text-zinc-700"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-success" />{highlight}</li>)}</ul></Card>
               <Card className="p-6"><h2 className="font-heading text-xl font-bold text-zinc-950">ข้อมูลจำเพาะ</h2><dl className="mt-4 divide-y divide-stone-200">{Object.entries(product.specifications).map(([label, value]) => <div key={label} className="grid grid-cols-2 gap-4 py-3"><dt className="text-zinc-500">{label}</dt><dd className="font-medium text-zinc-900">{value}</dd></div>)}</dl></Card>
             </div>
 

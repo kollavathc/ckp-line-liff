@@ -15,7 +15,7 @@ export function AppShell({ children, displayName }: AppShellProps) {
   ];
 
   function navigationClass({ isActive }: { isActive: boolean }): string {
-    return `flex min-h-11 items-center rounded-xl px-4 font-semibold ${isActive ? 'bg-emerald-50 text-emerald-700' : 'text-zinc-600 hover:bg-stone-100 hover:text-zinc-950'}`;
+    return `flex min-h-11 items-center rounded-xl px-4 font-semibold ${isActive ? 'bg-primary-soft text-primary' : 'text-zinc-600 hover:bg-stone-100 hover:text-zinc-950'}`;
   }
 
   return (

@@ -25,7 +25,7 @@ export function CategoryFilter({ value, onChange, categories }: CategoryFilterPr
               type="button"
               aria-pressed={selected}
               onClick={() => onChange(category.id)}
-              className={`min-h-11 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${selected ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-stone-200 bg-white text-zinc-700 hover:border-emerald-300 hover:text-emerald-700'}`}
+              className={`min-h-11 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${selected ? 'border-primary bg-primary text-white' : 'border-stone-200 bg-white text-zinc-700 hover:border-secondary hover:text-primary'}`}
             >
               {category.name}
             </button>

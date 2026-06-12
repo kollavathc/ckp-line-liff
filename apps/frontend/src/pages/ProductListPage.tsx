@@ -84,7 +84,7 @@ export function ProductListPage({ api }: ProductListPageProps) {
       <main>
         <section className="border-b border-stone-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-            <p className="text-sm font-semibold text-emerald-600">ดูแลสุขภาพที่บ้านอย่างมั่นใจ</p>
+            <p className="text-sm font-semibold text-primary">ดูแลสุขภาพที่บ้านอย่างมั่นใจ</p>
             <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold text-zinc-950 sm:text-5xl">อุปกรณ์การแพทย์ที่เลือกให้เหมาะกับทุกคนในครอบครัว</h1>
             <p className="mt-4 max-w-2xl leading-7 text-zinc-600">เลือกชมสินค้า เปรียบเทียบข้อมูล และสอบถามเภสัชกรก่อนตัดสินใจได้โดยตรงผ่าน LINE</p>
             <div className="mt-7 max-w-3xl"><SearchBar value={query} onChange={setQuery} /></div>
@@ -119,7 +119,7 @@ export function ProductListPage({ api }: ProductListPageProps) {
             )}
           </section>
 
-          <section id="contact" className="mt-12 scroll-mt-24 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
+          <section id="contact" className="mt-12 scroll-mt-24 rounded-2xl border border-primary/20 bg-highlight-soft p-6 sm:p-8">
             <h2 className="font-heading text-2xl font-bold text-zinc-950">ไม่แน่ใจว่าควรเลือกแบบไหน?</h2>
             <p className="mt-2 max-w-2xl leading-7 text-zinc-700">ส่งชื่อสินค้าหรือความต้องการมาให้ทีมซีเค ฟาร์มาซีช่วยแนะนำได้ เราพร้อมให้ข้อมูลก่อนตัดสินใจ</p>
           </section>

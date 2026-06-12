@@ -11,6 +11,6 @@
   input,
   select,
   textarea {
-    @apply focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-[#f8f5ef];
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#f8f5ef];
   }
 }

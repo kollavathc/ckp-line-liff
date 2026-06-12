@@ -10,9 +10,9 @@ interface EquipmentListProps {
 
 function StatusBadge({ status }: { status: EquipmentStatus }) {
   const color = status === EquipmentStatus.Available
-    ? 'bg-emerald-50 text-emerald-700'
+    ? 'bg-success-soft text-success-dark'
     : status === EquipmentStatus.Maintenance
-      ? 'bg-amber-50 text-amber-700'
+      ? 'bg-highlight-soft text-zinc-800'
       : status === EquipmentStatus.Retired
         ? 'bg-rose-50 text-rose-700'
         : 'bg-stone-100 text-zinc-700';
