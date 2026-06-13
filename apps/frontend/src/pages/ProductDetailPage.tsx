@@ -5,7 +5,7 @@ import { AppShell } from '../components/layout/AppShell';
 import { ProductCard } from '../components/products/ProductCard';
 import { Alert } from '../components/ui/Alert';
 import { Card } from '../components/ui/Card';
-import { canShareToLine, shareToLine } from '../lib/liff';
+import { canShareToLine, isInLiffClient, sendLineInquiry, shareToLine } from '../lib/liff';
 import { formatProductPrice, productCategoryLabels, productStockLabels } from '../lib/product';
 import { Product } from '../types/product';
 
@@ -54,6 +54,20 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
     return Array.from(new Set([product.imageUrl, ...product.imageUrls].filter(Boolean)));
   }, [product]);
 
+  async function inquireProduct(): Promise<void> {
+    if (!product) return;
+    if (isInLiffClient()) {
+      const text = `สอบถามสินค้า: ${product.name}\nราคา: ${formatProductPrice(product.price)}\nลิงก์: ${window.location.href}`;
+      try {
+        await sendLineInquiry(text);
+      } catch {
+        window.open(lineContactUrl, '_blank');
+      }
+    } else {
+      window.open(lineContactUrl, '_blank');
+    }
+  }
+
   async function shareProduct(): Promise<void> {
     if (!product) return;
     const shareData = { title: product.name, text: `ดูข้อมูล ${product.name} จากซีเค ฟาร์มาซี`, url: window.location.href };
@@ -95,7 +109,7 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
                 <p className="mt-6 font-heading text-3xl font-bold text-zinc-950">{formatProductPrice(product.price)}</p>
                 <p className="mt-5 leading-7 text-zinc-700">{product.description}</p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                  <a href={lineContactUrl} target="_blank" rel="noreferrer" className="flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 font-semibold text-white hover:bg-primary-dark">สอบถามสินค้าทาง LINE</a>
+                  <button type="button" onClick={() => void inquireProduct()} className="flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 font-semibold text-white hover:bg-primary-dark">สอบถามสินค้าทาง LINE</button>
                   <button type="button" onClick={() => void shareProduct()} className="min-h-12 rounded-xl border border-stone-200 bg-white px-5 font-semibold text-zinc-700 hover:bg-stone-50">แชร์สินค้า</button>
                 </div>
                 <p className="mt-3 text-xs text-zinc-500">ราคาและสินค้าคงเหลืออาจมีการเปลี่ยนแปลง กรุณาสอบถามทางร้านก่อนสั่งซื้อ</p>

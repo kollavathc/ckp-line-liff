@@ -23,3 +23,16 @@ export async function shareToLine(text: string): Promise<boolean> {
   const result = await liff.shareTargetPicker([{ type: 'text', text }]);
   return Boolean(result);
 }
+
+export function isInLiffClient(): boolean {
+  try {
+    return liff.isInClient();
+  } catch {
+    return false;
+  }
+}
+
+export async function sendLineInquiry(text: string): Promise<void> {
+  await liff.sendMessages([{ type: 'text', text }]);
+  liff.closeWindow();
+}
