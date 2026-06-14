@@ -57,8 +57,15 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
   async function inquireProduct(): Promise<void> {
     if (!product) return;
     const text = `สอบถามสินค้า: ${product.name}\nราคา: ${formatProductPrice(product.price)}\nลิงก์: ${window.location.href}`;
-    if (isInLiffClient() && isInLiffChatContext()) {
-      await sendLineInquiry(text);
+    const inClient = isInLiffClient();
+    const inChat = isInLiffChatContext();
+    setNotice(`[debug] inClient=${String(inClient)} inChat=${String(inChat)}`);
+    if (inClient && inChat) {
+      try {
+        await sendLineInquiry(text);
+      } catch (err) {
+        setNotice(`[debug] sendMessages error: ${err instanceof Error ? err.message : String(err)}`);
+      }
     } else {
       window.open(lineContactUrl, '_blank');
     }
