@@ -5,7 +5,7 @@ import { AppShell } from '../components/layout/AppShell';
 import { ProductCard } from '../components/products/ProductCard';
 import { Alert } from '../components/ui/Alert';
 import { Card } from '../components/ui/Card';
-import { canShareToLine, isInLiffClient, sendLineInquiry, shareToLine } from '../lib/liff';
+import { canShareToLine, isInLiffChatContext, isInLiffClient, sendLineInquiry, shareToLine } from '../lib/liff';
 import { formatProductPrice, productCategoryLabels, productStockLabels } from '../lib/product';
 import { Product } from '../types/product';
 
@@ -56,13 +56,9 @@ export function ProductDetailPage({ api, lineContactUrl }: ProductDetailPageProp
 
   async function inquireProduct(): Promise<void> {
     if (!product) return;
-    if (isInLiffClient()) {
-      const text = `สอบถามสินค้า: ${product.name}\nราคา: ${formatProductPrice(product.price)}\nลิงก์: ${window.location.href}`;
-      try {
-        await sendLineInquiry(text);
-      } catch {
-        window.open(lineContactUrl, '_blank');
-      }
+    const text = `สอบถามสินค้า: ${product.name}\nราคา: ${formatProductPrice(product.price)}\nลิงก์: ${window.location.href}`;
+    if (isInLiffClient() && isInLiffChatContext()) {
+      await sendLineInquiry(text);
     } else {
       window.open(lineContactUrl, '_blank');
     }

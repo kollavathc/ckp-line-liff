@@ -32,6 +32,15 @@ export function isInLiffClient(): boolean {
   }
 }
 
+export function isInLiffChatContext(): boolean {
+  try {
+    const context = liff.getContext();
+    return ['utou', 'room', 'group', 'multichattab'].includes(context?.type ?? '');
+  } catch {
+    return false;
+  }
+}
+
 export async function sendLineInquiry(text: string): Promise<void> {
   await liff.sendMessages([{ type: 'text', text }]);
   liff.closeWindow();
