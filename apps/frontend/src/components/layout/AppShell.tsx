@@ -18,7 +18,7 @@ export function AppShell({ children }: AppShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f5ef] text-zinc-900">
+    <div className="min-h-screen bg-white text-zinc-900">
       <header className="sticky top-0 z-40 border-b border-stone-200 bg-white">
         <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
